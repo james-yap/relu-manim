@@ -11,5 +11,6 @@ dependencies = [
     "notebook>=7.5.5",
     "numpy>=2.4.4",
     "pillow>=12.2.0",
+    "scikit-learn>=1.8.0",
     "torch>=2.11.0",
 ]
