@@ -7,6 +7,7 @@ requires-python = ">=3.13"
 dependencies = [
     "jupyterlab-vim>=4.1.4",
     "manim>=0.20.1",
+    "manim-slides>=5.6.0",
     "matplotlib>=3.10.8",
     "notebook>=7.5.5",
     "numpy>=2.4.4",

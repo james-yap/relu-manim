@@ -1,0 +1,30 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[ ]:
+
+
+from manim import *
+
+config.verbosity = "WARNING"
+config.progress_bar = "none"
+config.media_width = "100%"
+
+
+# In[ ]:
+
+
+get_ipython().run_cell_magic('manim', '-ql Playground', '\nclass Playground(Scene):\n    def construct(self):\n        plane = NumberPlane(\n            y_range=(-2, 8, 1),\n        )\n\n        func = plane.plot(lambda x: x**2, x_range=[-3, 3], color=YELLOW)\n        relu_func = plane.plot(lambda x: max(x, 0), x_range=[-10, 10], color=BLUE)\n        relu_func2 = plane.plot(lambda x: max(x, 0) + max(0, x - 1), x_range=[-10, 10], color=BLUE)\n\n        # 3. Add labels (optional)\n        # func_label = plane.get_graph_label(func, label="x^2")\n        # relu_func_label = plane.get_graph_label(relu_func, label="ReLU")\n\n        # 4. Display\n        self.add(plane)\n        self.play(Create(func), Create(relu_func), Create(relu_func2))\n        # self.play(Create(func), Write(func_label), Create(relu_func), Write(relu_func_label))\n        self.wait()\n')
+
+
+# In[ ]:
+
+
+get_ipython().run_cell_magic('manim', '-ql ArtificialNeuron', '\nclass ArtificialNeuron(Scene):\n    def construct(self):\n        # --- Color Palette ---\n        input_color = GREEN_C\n        bias_color = RED_C\n        sum_color = YELLOW_C\n        act_color = BLUE_C\n        out_color = TEAL_C\n\n        # --- Nodes ---\n\n        # 1. Inputs (Left side)\n        x1 = VGroup(Circle(color=input_color, radius=0.5, fill_opacity=0.1), MathTex("X_1"))\n        x2 = VGroup(Circle(color=input_color, radius=0.5, fill_opacity=0.1), MathTex("X_2"))\n        dots = MathTex(r"\\vdots").scale(1.5)\n        xn = VGroup(Circle(color=input_color, radius=0.5, fill_opacity=0.1), MathTex("X_n"))\n\n        inputs = VGroup(x1, x2, dots, xn).arrange(DOWN, buff=0.5).shift(LEFT * 5)\n\n        # 2. Summation (Center)\n        sum_circle = Circle(color=sum_color, radius=0.8, fill_opacity=0.1)\n        sum_symbol = MathTex(r"\\sum").scale(1).set_color(sum_color)\n        sum_node = VGroup(sum_circle, sum_symbol).shift(LEFT * 1)\n        sum_label = Text("Summation", font_size=24).next_to(sum_node, DOWN, buff=0.4)\n\n        # 3. Bias (Top)\n        bias_circle = Circle(color=bias_color, radius=0.5, fill_opacity=0.1)\n        bias_symbol = MathTex("b").set_color(bias_color)\n        bias_node = VGroup(bias_circle, bias_symbol).next_to(sum_node, UP, buff=1.5)\n        bias_label = Text("bias", font_size=24).next_to(bias_node, UP, buff=0.2)\n\n        # 4. Activation Function (Right)\n        act_circle = Circle(color=act_color, radius=0.8, fill_opacity=0.1)\n\n        # Creating the small ReLU graph inside the activation circle\n        relu_lines = VGroup(\n            Line(act_circle.get_center() + LEFT*0.3, act_circle.get_center(), color=RED, stroke_width=4),\n            Line(act_circle.get_center(), act_circle.get_center() + UP*0.3 + RIGHT*0.3, color=RED, stroke_width=4)\n        )\n        act_node = VGroup(act_circle, relu_lines).shift(RIGHT * 2.5)\n        act_label = Text("Activation\\nFunction", font_size=24, line_spacing=1).next_to(act_node, DOWN, buff=0.4)\n\n        # 5. Output (Far Right)\n        out_rect = RoundedRectangle(corner_radius=0.2, width=2.5, height=1.2, color=out_color, fill_opacity=0.1)\n        out_text = Text("Output", font_size=32)\n        out_node = VGroup(out_rect, out_text).shift(RIGHT * 6)\n\n\n        # --- Connections & Weights ---\n\n        # Arrows from inputs to sum\n        w1_arrow = Arrow(x1.get_right(), sum_node.get_left(), buff=0.2, stroke_width=2, max_tip_length_to_length_ratio=0.08)\n        w1_label = MathTex("w_1").move_to(w1_arrow).add_background_rectangle(color=PINK, opacity=1)\n\n        w2_arrow = Arrow(x2.get_right(), sum_node.get_left(), buff=0.2, stroke_width=2, max_tip_length_to_length_ratio=0.08)\n        w2_label = MathTex("w_2").move_to(w2_arrow)\n\n        wn_arrow = Arrow(xn.get_right(), sum_node.get_left(), buff=0.2, stroke_width=2, max_tip_length_to_length_ratio=0.08)\n        wn_label = MathTex("w_n").move_to(wn_arrow)\n\n        # Arrow from bias to sum\n        bias_arrow = Arrow(bias_node.get_bottom(), sum_node.get_top(), buff=0.2, stroke_width=2)\n\n        # Arrow from sum to activation\n        sum_to_act_arrow = Arrow(sum_node.get_right(), act_node.get_left(), buff=0.2, stroke_width=3)\n\n        # Arrow from activation to output\n        act_to_out_arrow = Arrow(act_node.get_right(), out_node.get_left(), buff=0.2, stroke_width=3)\n\n\n        # --- Animation Sequence ---\n        self.play(\n            FadeIn(inputs),\n            FadeIn(bias_node), FadeIn(bias_label)\n        )\n\n        self.play(\n            Create(w1_arrow), Write(w1_label),\n            Create(w2_arrow), FadeIn(w2_label),\n            Create(wn_arrow), Write(wn_label),\n            Create(bias_arrow)\n        )\n\n        self.play(FadeIn(sum_node), Write(sum_label))\n        self.play(Create(sum_to_act_arrow))\n\n        self.play(FadeIn(act_node), Write(act_label))\n        self.play(Create(act_to_out_arrow))\n\n        self.play(FadeIn(out_node))\n\n        self.wait(2)\n')
+
+
+# In[ ]:
+
+
+
+
