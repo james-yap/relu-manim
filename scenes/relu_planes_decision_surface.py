@@ -52,7 +52,13 @@ def train_circles_model(seed=6, epochs=100):
         optimizer.step()
 
     model.eval()
-    params = tuple(p.detach().cpu().numpy() for p in model.parameters())
+    state = {name: tensor.numpy(force=True) for name, tensor in model.state_dict().items()}
+    params = (
+        state["hidden.weight"],
+        state["hidden.bias"],
+        state["output.weight"],
+        state["output.bias"],
+    )
     return x_np, y_np, params, tuple(losses)
 
 
@@ -469,3 +475,7 @@ class FinalDecisionSurfaceScene(ReLUPlanesBaseScene):
 
 class ReLUPlanesDecisionSurface(FinalDecisionSurfaceScene):
     """Backward-compatible alias for the final-surface atomic scene."""
+
+
+if __name__ == "__main__":
+    train_circles_model()
