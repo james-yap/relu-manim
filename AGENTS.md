@@ -25,12 +25,17 @@ This repo is a Manim / manim-slides project for visualizing ReLU neural-network 
 
 - `scenes/presentation.py`
   - Single-file home for the whole presentation from now on; add future presentation scenes here instead of creating separate numbered scene files.
-  - Contains the Manim-slides problem-statement scene for the Study Time vs. GPA linear-regression setup.
-  - Mock data keeps 13 points, generated from `np.linspace` plus deterministic noise so least-squares residual squares are visibly legible.
-  - Slide 4 expands `y = Wx + b` into a matrix multiplication view: `y` is ground truth, `X`/`x` is fixed input, and `W`/parameters are optimized.
+  - Contains the Manim-slides presentation, starting with Slide 0 title "ReLUs, explained quickly" and a centered iconic ReLU graph.
+  - Then continues with the problem-statement scene for Study Time vs. GPA linear regression, followed by a Temperature vs. Energy Consumption quadratic motivation.
+  - Linear mock data keeps 13 points, generated from `np.linspace` plus deterministic noise so least-squares residual squares are visibly legible.
+  - Slides 3-5 are formulation-focused: fade out the Study Time graph before showing the centered `Xw+b` panel and keep the matrix view centered with no graph alongside it.
+  - Slide 4 expands `y = Xw + b` into a single-feature matrix multiplication view: `y` is ground truth, `X`/`x` is fixed input, and scalar `w`/`b` are optimized.
+  - Slide 5 dims fixed `y`/`X` data and highlights `w`/`b` as trainable parameters.
+  - Slides 6-10 switch to deterministic U-shaped temperature/energy data, show the same `Xw+b` linear attempt failing, restack it as a one-feature matrix, then introduce `w_2` only on Slide 10 with a one-step `ReplacementTransform` from the old unaugmented matrix to the clean augmented matrix.
+  - Slides 11-13 keep the resolved quadratic equation through the successful curve fit, then return to the matrix view to highlight the full design matrix and finally the engineered `x^2` column plus `w_2` term.
   - For the problem scene, keep the global title small and do not use subtitles.
-  - For Slide 4, make the linalg/matrix expression the visual focus: large matrix equation, smaller left Cartesian graph pushed far left, and no rounded rectangle around the linalg section.
-  - For Slide 4, show only two feature columns (`x_1`, `x_2`) and avoid horizontal/`x_n` ellipses; use only vertical dots for stacked examples.
+  - For Slide 4, make the linalg/matrix expression the visual focus: large centered matrix equation and no rounded rectangle around the linalg section.
+  - For Slide 4, keep the Study Time formulation single-weight (`w`) only; do not introduce `w_1`/`w_2` until Slide 10.
 
 - `src/circles_transformation.py`
   - Original notebook-style PyTorch experiment and source reference for `CirclesModel` and hidden-unit plane decomposition.
